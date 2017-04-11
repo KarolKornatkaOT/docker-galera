@@ -2,25 +2,36 @@
 
 echo '################################################################'
 
-if [ ! -f /etc/mysql/conf.d/galera.cnf ]; then
-  echo 'prepare new configuration files'
-  tar xfz /scripts/galera_init_conf.tgz -C /etc/mysql
-  cp /scripts/galera.cnf_template /etc/mysql/conf.d/galera.cnf
-  echo 'new configuration files prepared'
-else
-  tar cfz /galera_init_conf_bkp.tgz /etc/mysql
-fi
+if [ "$EXTERNAL_CONFIGURATION" != "Y" ] && [ "$EXTERNAL_CONFIGURATION" != "y" ]; then
 
-sed -i 's/^bind-address=.*/bind-address='$MYSQL_BIND_ADDRESS'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^port.*/port='$MYSQL_BIND_PORT'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^wsrep_provider_options=.*/wsrep_provider_options='$GALERA_WSREP_PROVIDER_OPTIONS'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^wsrep_cluster_name=.*/wsrep_cluster_name='$GALERA_WSREP_CLUSTER_NAME'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^wsrep_cluster_address=.*/wsrep_cluster_address='$GALERA_WSREP_CLUSTER_ADDRES'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^wsrep_node_name=.*/wsrep_node_name='$GALERA_WSREP_NODE_NAME'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^wsrep_node_address=.*/wsrep_node_address='$GALERA_WSREP_NODE_ADDRESS'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^wsrep_sst_auth=.*/wsrep_sst_auth='$GALERA_WSREP_SST_AUTH_USER':'$GALERA_WSREP_SST_AUTH_PASS'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^server_id=.*/server_id='$SERVER_ID'/' /etc/mysql/conf.d/galera.cnf
-sed -i 's/^gtid-domain-id=.*/gtid-domain-id='$GTID_DOMAIN_ID'/' /etc/mysql/conf.d/galera.cnf
+  if [ ! -f /etc/mysql/my.cnf ] ; then
+    tar cfz /etc/mysql/galera_init_conf_bkp_$(date +%Y%m%d_%H%M$).tgz /etc/mysql
+    tar xfz /scripts/galera_init_conf.tgz -C /etc/mysql
+  fi
+
+  if [ ! -f /etc/mysql/conf.d/galera.cnf ] ; then
+    cp /scripts/galera.cnf_template /etc/mysql/conf.d/galera.cnf
+  fi
+
+  sed -i 's/^bind-address=.*/bind-address='$MYSQL_BIND_ADDRESS'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^port.*/port='$MYSQL_BIND_PORT'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^wsrep_provider_options=.*/wsrep_provider_options='$GALERA_WSREP_PROVIDER_OPTIONS'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^wsrep_node_name=.*/wsrep_node_name='$GALERA_WSREP_NODE_NAME'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^wsrep_node_address=.*/wsrep_node_address='$GALERA_WSREP_NODE_ADDRESS'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^wsrep_sst_auth=.*/wsrep_sst_auth='$GALERA_WSREP_SST_AUTH_USER':'$GALERA_WSREP_SST_AUTH_PASS'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^server_id=.*/server_id='$SERVER_ID'/' /etc/mysql/conf.d/galera.cnf
+  sed -i 's/^gtid-domain-id=.*/gtid-domain-id='$GTID_DOMAIN_ID'/' /etc/mysql/conf.d/galera.cnf
+  
+  if [ "$RUN_CLUSTER" == "Y" ] ; then
+    sed -i 's/^wsrep_cluster_name=.*/wsrep_cluster_name='$GALERA_WSREP_CLUSTER_NAME'/' /etc/mysql/conf.d/galera.cnf
+    sed -i 's/^wsrep_cluster_address=.*/wsrep_cluster_address='$GALERA_WSREP_CLUSTER_ADDRES'/' /etc/mysql/conf.d/galera.cnf
+    sed -i 's/^#wsrep_cluster_name=.*/wsrep_cluster_name='$GALERA_WSREP_CLUSTER_NAME'/' /etc/mysql/conf.d/galera.cnf
+    sed -i 's/^#wsrep_cluster_address=.*/wsrep_cluster_address='$GALERA_WSREP_CLUSTER_ADDRES'/' /etc/mysql/conf.d/galera.cnf
+  else
+    sed -i 's/^wsrep_cluster_name=.*/#wsrep_cluster_name='$GALERA_WSREP_CLUSTER_NAME'/' /etc/mysql/conf.d/galera.cnf
+    sed -i 's/^wsrep_cluster_address=.*/#wsrep_cluster_address='$GALERA_WSREP_CLUSTER_ADDRES'/' /etc/mysql/conf.d/galera.cnf
+  fi
+fi
 
 chown -R mysql: /var/log/mysql 
 chown -R mysql: /var/lib/mysql 
@@ -34,7 +45,7 @@ else
   NEW_DB=0
 fi
 
-if [ "$NEW_DB" == "1" ] && [ -f /etc/mysql/init_new_cluster ]; then
+if [ "$NEW_DB" == "1" ] && ( [ -f /etc/mysql/init_new_cluster ] || [ "$INIT_NEW_CLUSTER" == "Y" ] || [ "$INIT_NEW_CLUSTER" == "y" ] ) ; then
 
   mysqld --skip-networking  --wsrep-new-cluster --socket=/var/run/mysqld/mysqld.sock &
   pid="$!"
@@ -103,7 +114,7 @@ EOSQL
 
 fi
 
-if [ -f /etc/mysql/init_new_cluster ]; then
+if [ -f /etc/mysql/init_new_cluster ] ||  [ "$INIT_NEW_CLUSTER" == "Y" ] ||  [ "$INIT_NEW_CLUSTER" == "y" ]; then
   echo "New cluster initialization"
   rm -f /etc/mysql/init_new_cluster
   mysqld --wsrep-new-cluster
