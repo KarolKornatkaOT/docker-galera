@@ -18,7 +18,6 @@ RUN mkdir /scripts
 
 COPY files/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY files/galera.cnf_template /scripts/galera.cnf_template
-COPY files/galera_init_conf.tgz /scripts/
 COPY files/backup.sh /scripts/
 
 RUN apt-get update \
@@ -26,6 +25,8 @@ RUN apt-get update \
 RUN apt-get install -y mariadb-server=$MYSQL_VERSION* percona-xtrabackup-24
 # && apt-get install haproxy \
 # && apt-get install keepalived 
+
+RUN tar cfz /scripts/galera_init_conf.tgz -C /etc/mysql .
 
 RUN rm /etc/mysql/conf.d/mariadb.cnf /etc/mysql/conf.d/tokudb.cnf \
  && chown -R mysql: /var/lib/mysql \
