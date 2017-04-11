@@ -46,12 +46,11 @@ else
   NEW_DB=0
 fi
 
-if [ "$NEW_DB" == "1" ] && ( [ -f /etc/mysql/init_new_cluster ] || [ "$INIT_NEW_CLUSTER" == "true" ] ) ; then
+if [ "$NEW_DB" == "1" ] && ( [ -f /etc/mysql/init_new_cluster ] || [ "$INIT_NEW_CLUSTER" == "true" ] || [ "$RUN_CLUSTER" == "false" ] ) ; then
 
   mysqld --skip-networking  --wsrep-new-cluster --socket=/var/run/mysqld/mysqld.sock &
   pid="$!"
 
-#  mysql='mysql --protocol=socket -uroot -hlocalhost --socket=/var/run/mysqld/mysqld.sock'
   mysql='mysql --protocol=socket --socket=/var/run/mysqld/mysqld.sock'
 
   for i in {30..0}; do
