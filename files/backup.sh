@@ -4,8 +4,8 @@ TIMESTAMP=$(date +%Y-%m-%d_%H%M)
 BACK="/var/backup"
 BACKUP_DIR="$BACK/$TIMESTAMP"
 MYSQL_ERR="/var/log/mysql"
-MYSQL_USER="#BKP_USER"
-MYSQL_PASSWORD="#BKP_PASS"
+MYSQL_USER="bkp"
+MYSQL_PASSWORD="bkp_pass"
 
 usage() {
         echo "usage: $(basename $0) [option]"
