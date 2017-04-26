@@ -88,9 +88,8 @@ EOSQL
 
   if [ "$GALERA_WSREP_SST_AUTH_USER" -a "$GALERA_WSREP_SST_AUTH_PASS" ]; then
     echo "CREATE USER '$GALERA_WSREP_SST_AUTH_USER'@'localhost' IDENTIFIED BY '$GALERA_WSREP_SST_AUTH_PASS' ;" | ${mysql[@]}
-    echo "GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO '$GALERA_WSREP_SST_AUTH_USER'@'localhost';" | ${mysql[@]}
+    echo "GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT,PROCESS ON *.* TO '$GALERA_WSREP_SST_AUTH_USER'@'localhost';" | ${mysql[@]}
     echo "GRANT REPLICATION SLAVE ON *.* TO '$GALERA_WSREP_SST_AUTH_USER'@'localhost';" | ${mysql[@]}
-    echo "GRANT all ON *.* TO '$GALERA_WSREP_SST_AUTH_USER'@'localhost';" | ${mysql[@]}
     echo 'FLUSH PRIVILEGES ;' | "${mysql[@]}"
   fi
 
