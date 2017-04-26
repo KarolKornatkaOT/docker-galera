@@ -96,7 +96,7 @@ EOSQL
 
   if [ "$DB_BACKUP_USR" -a "$DB_BACKUP_USR_PASS" ]; then
     echo "CREATE USER '$DB_BACKUP_USR'@'localhost' IDENTIFIED BY '$DB_BACKUP_USR_PASS';" | ${mysql[@]}
-    echo "GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT ON *.* TO '$DB_BACKUP_USR'@'localhost';" | ${mysql[@]}
+    echo "GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT, PROCESS ON *.* TO '$DB_BACKUP_USR'@'localhost';" | ${mysql[@]}
     echo "GRANT SELECT ON *.* TO '$DB_BACKUP_USR'@'localhost';" | ${mysql[@]}
     echo 'FLUSH PRIVILEGES ;' | "${mysql[@]}"
   fi
