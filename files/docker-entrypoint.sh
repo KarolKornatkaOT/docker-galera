@@ -32,11 +32,11 @@ if [ "$EXTERNAL_CONFIGURATION" != "true" ] ; then
     sed -i 's/^wsrep_node_name=.*/#wsrep_node_name='$GALERA_WSREP_NODE_NAME'/' /etc/mysql/conf.d/galera.cnf
     sed -i 's/^wsrep_node_address=.*/#wsrep_node_address='$GALERA_WSREP_NODE_ADDRESS'/' /etc/mysql/conf.d/galera.cnf
   fi
+fi
 
-  if [ "$DB_BACKUP_USR" -a "$DB_BACKUP_USR_PASS" ]; then
-    sed -i 's/^#*MYSQL_USER=.*/MYSQL_USER='$DB_BACKUP_USR'/' /scripts/backup.sh
-    sed -i 's/^#*MYSQL_PASSWORD=.*/MYSQL_PASSWORD='$DB_BACKUP_USR_PASS'/' /scripts/backup.sh
-  fi
+if [ "$DB_BACKUP_USR" -a "$DB_BACKUP_USR_PASS" ]; then
+  sed -i 's/^#*MYSQL_USER=.*/MYSQL_USER='$DB_BACKUP_USR'/' /scripts/backup.sh
+  sed -i 's/^#*MYSQL_PASSWORD=.*/MYSQL_PASSWORD='$DB_BACKUP_USR_PASS'/' /scripts/backup.sh
 fi
 
 chown -R mysql: /var/log/mysql 
