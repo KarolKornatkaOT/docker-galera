@@ -126,7 +126,7 @@ if [ -f /etc/mysql/init_new_cluster ] ||  [ "$INIT_NEW_CLUSTER" == "true" ] ; th
   echo "New cluster initialized"
 else
   echo "Node starting" 
-  mysqld
+  mysqld_safe
   echo "Node started" 
 fi
 
