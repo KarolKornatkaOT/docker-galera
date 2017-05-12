@@ -16,14 +16,17 @@ if [ "$EXTERNAL_CONFIGURATION" != "true" ] ; then
     cp /scripts/mariadb.cnf_template /etc/mysql/conf.d/mariadb.cnf
   fi
 
-  sed -i 's/^bind-address=.*/bind-address='$MYSQL_BIND_ADDRESS'/' /etc/mysql/conf.d/mariadb.cnf
-  sed -i 's/^port=.*/port='$MYSQL_BIND_PORT'/' /etc/mysql/conf.d/mariadb.cnf
-  sed -i 's/^server_id=.*/server_id='$SERVER_ID'/' /etc/mysql/conf.d/mariadb.cnf
-
+  if [ "$MYSQL_BIND_ADDRESS" != "" ] ; then
+    sed -i 's/^#.bind-address=.*/bind-address='$MYSQL_BIND_ADDRESS'/' /etc/mysql/conf.d/mariadb.cnf
+  fi
+  if [ "$MYSQL_BIND_PORT" != "" ] ; then
+    sed -i 's/^#.port=.*/port='$MYSQL_BIND_PORT'/' /etc/mysql/conf.d/mariadb.cnf
+  fi
+  if [ "$SERVER_ID" != "" ] ; then
+    sed -i 's/^#.server_id=.*/server_id='$SERVER_ID'/' /etc/mysql/conf.d/mariadb.cnf
+  fi
   if [ "$INNODB_BUFFER_POOL_SIZE" != "" ] ; then
     sed -i 's/^innodb_buffer_pool_size *=.*/innodb_buffer_pool_size = '$INNODB_BUFFER_POOL_SIZE'/' /etc/mysql/conf.d/mariadb.cnf
-  else
-    sed -i 's/^innodb_buffer_pool_size *=.*/innodb_buffer_pool_size = 1G/' /etc/mysql/conf.d/mariadb.cnf
   fi
   
   if [ ! -f /etc/mysql/conf.d/galera.cnf ] ; then
