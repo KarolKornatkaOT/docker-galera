@@ -1,7 +1,7 @@
 FROM oberthur/docker-ubuntu:latest
 MAINTAINER Krzysztof Olecki <k.olecki@oberthur.com>
 
-ENV  MYSQL_VERSION=10.1.22 
+ENV  MYSQL_VERSION=10.1.23 
 ENV  MYSQL_REPO_VERSION=10.1
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
@@ -18,6 +18,7 @@ RUN mkdir /scripts
 
 COPY files/docker-entrypoint.sh /scripts/docker-entrypoint.sh
 COPY files/galera.cnf_template /scripts/galera.cnf_template
+COPY files/mariadb.cnf_template /scripts/mariadb.cnf_template
 COPY files/backup.sh /scripts/
 
 RUN apt-get update \

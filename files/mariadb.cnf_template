@@ -1,0 +1,157 @@
+[client]
+port=3306
+
+[mysqld]
+bind-address='0.0.0.0'
+port=3306
+## server_id must be unique for each node !!!
+server_id=1
+
+#####################
+default_storage_engine = InnoDB
+datadir      = /var/lib/mysql
+tmpdir       = /var/lib/mysql/tmp
+pid-file     = /var/run/mysqld/mysqld.pid
+socket       = /var/run/mysqld/mysqld.sock
+lower_case_table_names = 1
+
+performance_schema   = 1
+table_cache          = 1024
+collation-server     = utf8_unicode_ci
+init-connect         = 'SET NAMES utf8'
+character-set-server = utf8
+max_allowed_packet   = 256M
+thread_cache_size    = 32
+skip-external-locking
+skip-name-resolve
+
+#####################
+#Query cache
+#####################
+query_cache_type  = 0
+query_cache_size  = 0
+query_cache_limit = 0
+max_connections  = 5120
+
+#####################
+#Per connection
+#####################
+join_buffer_size       = 512K
+sort_buffer_size       = 512K
+read_buffer_size       = 512K
+read_rnd_buffer_size   = 8M
+binlog_cache_size      = 256k
+binlog_stmt_cache_size = 256K
+max_heap_table_size    = 32M
+tmp_table_size         = 32M
+
+#####################
+#MyISAM settings
+#####################
+key_buffer_size         = 100M
+myisam_sort_buffer_size = 1024M
+myisam_recover_options  = BACKUP
+
+#####################
+#InnoDB settings
+#####################
+innodb_log_group_home_dir      = /var/lib/mysql/dblogs
+innodb_autoinc_lock_mode       = 2
+innodb_buffer_pool_instances   = 2
+#innodb_buffer_pool_size        = 50G --KO_X
+innodb_buffer_pool_size        = 6GB
+innodb_change_buffering        = all
+innodb_checksums               = 1
+innodb_commit_concurrency      = 0
+innodb_thread_concurrency      = 0
+innodb_doublewrite             = 1
+innodb_fast_shutdown           = 1
+innodb_file_format             = Barracuda
+innodb_file_format_check       = 1
+innodb_file_format_max         = Barracuda
+innodb_file_per_table          = 1
+innodb_flush_log_at_trx_commit = 0
+innodb_flush_method            = O_DIRECT
+innodb_force_recovery          = 0
+innodb_io_capacity             = 4000 # this should be also calculated on the base of real number of operation a disk could do per second
+innodb_large_prefix            = 1
+innodb_lock_wait_timeout       = 5
+innodb_locks_unsafe_for_binlog = 1
+innodb_log_buffer_size         = 128M
+innodb_log_file_size           = 512M
+innodb_log_files_in_group      = 2
+innodb_max_dirty_pages_pct     = 70
+innodb_max_purge_lag           = 0
+innodb_old_blocks_pct          = 35
+innodb_old_blocks_time         = 1000
+innodb_open_files              = 4096
+innodb_read_io_threads         = 48
+innodb_write_io_threads        = 48
+innodb_rollback_on_timeout     = 1
+innodb_rollback_segments       = 128 #default
+innodb_spin_wait_delay         = 4
+innodb_stats_method            = nulls_equal
+innodb_stats_auto_recalc       = 1 # default
+innodb_stats_persistent        = 1 # default
+innodb_stats_on_metadata       = 0 # default in MariaDB 10.0
+innodb_stats_persistent_sample_pages = 20 # default
+innodb_support_xa              = 1
+innodb_sync_spin_loops         = 10
+innodb_table_locks             = 1
+innodb_thread_sleep_delay      = 0
+innodb_use_native_aio          = 1 #in emergency inno db cannot start try 0
+
+#####################
+#Replication + binlog settings
+#####################
+binlog_format     = ROW
+log_bin           = /var/lib/mysql/dblogs/binary/mariadb-bin
+log_bin_index     = /var/lib/mysql/dblogs/binary/mariadb-bin.index
+expire_logs_days  = 7
+max_binlog_size   = 512M
+log-slave-updates = 1
+sync_binlog       = 1
+log_bin_trust_function_creators = 1
+
+#####################
+#Audit
+#####################
+server_audit_logging          = ON
+server_audit_events           = CONNECT,QUERY,TABLE
+server_audit_file_path        = /var/log/mysql/server_audit.log
+server_audit_file_rotate_now  = ON
+server_audit_file_rotate_size = 50000000
+server_audit_incl_users       = ''
+
+#####################
+# Logs
+#####################
+log-warnings = 2
+log-error    = /var/log/mysql/mysqld.log
+
+#####################
+# General Log DO NOT activate unless very good reason
+#####################
+general_log_file = /var/log/mysql/general_query.log
+general_log      = off
+
+#####################
+#Slow Log
+#####################
+slow-query-log      = 1
+slow_launch_time    = 2
+long_query_time     = 1
+slow_query_log_file = /var/log/mysql/mysql-slow.log
+log-queries-not-using-indexes = 0
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet = 256M
+
+[client]
+#default-character-set=utf8
+
+[mysql]
+#default-character-set=utf8
+
