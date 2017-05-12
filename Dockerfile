@@ -9,7 +9,7 @@ RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 RUN apt-get install software-properties-common \
  && apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 \
- && add-apt-repository "deb [arch=amd64,i386,ppc64el] http://mariadb.kisiek.net/repo/$MYSQL_REPO_VERSION/ubuntu xenial main" \
+ && add-apt-repository "deb [arch=amd64,i386,ppc64el] http://sfo1.mirrors.digitalocean.com/mariadb/repo/$MYSQL_REPO_VERSION/ubuntu xenial main" \
  && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8507EFA5 \ 
  && add-apt-repository 'deb http://repo.percona.com/apt xenial main'
 # && add-apt-repository ppa:vbernat/haproxy-1.7

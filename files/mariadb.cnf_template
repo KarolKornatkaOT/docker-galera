@@ -1,11 +1,11 @@
 [client]
-port=3306
+#port=3306
 
 [mysqld]
-bind-address='0.0.0.0'
-port=3306
+#bind-address='0.0.0.0'
+#port=3306
 ## server_id must be unique for each node !!!
-server_id=1
+#server_id=1
 
 #####################
 default_storage_engine = InnoDB
@@ -59,7 +59,7 @@ innodb_log_group_home_dir      = /var/lib/mysql/dblogs
 innodb_autoinc_lock_mode       = 2
 innodb_buffer_pool_instances   = 2
 #innodb_buffer_pool_size        = 50G --KO_X
-innodb_buffer_pool_size        = 6GB
+innodb_buffer_pool_size        = 1GB
 innodb_change_buffering        = all
 innodb_checksums               = 1
 innodb_commit_concurrency      = 0
