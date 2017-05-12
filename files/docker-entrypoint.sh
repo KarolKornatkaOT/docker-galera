@@ -30,7 +30,7 @@ if [ "$EXTERNAL_CONFIGURATION" != "true" ] ; then
     cp /scripts/galera.cnf_template /etc/mysql/conf.d/galera.cnf
   fi
 
-  if [ "$RUN_CLUSTER" == "true" ] ; then
+  if [ "$RUN_CLUSTER" = "true" ] ; then
     sed -i 's/^#wsrep_on=/wsrep_on=/' /etc/mysql/conf.d/galera.cnf 
     sed -i 's/^#wsrep_provider=/wsrep_provider=/' /etc/mysql/conf.d/galera.cnf 
     sed -i 's/^#wsrep_gtid_mode=/wsrep_gtid_mode=/' /etc/mysql/conf.d/galera.cnf
@@ -104,7 +104,7 @@ else
   NEW_DB=0
 fi
 
-if [ "$NEW_DB" == "1" ] && ( [ -f /etc/mysql/init_new_cluster ] || [ "$INIT_NEW_CLUSTER" == "true" ] || [ "$RUN_CLUSTER" != "true" ] ) ; then
+if [ "$NEW_DB" = "1" ] && ( [ -f /etc/mysql/init_new_cluster ] || [ "$INIT_NEW_CLUSTER" = "true" ] || [ "$RUN_CLUSTER" != "true" ] ) ; then
 
   mysqld --skip-networking  --wsrep-new-cluster --socket=/var/run/mysqld/mysqld.sock &
   pid="$!"
@@ -173,7 +173,7 @@ EOSQL
   sed -i 's/^#server_audit_/server_audit_/' /etc/mysql/conf.d/mariadb.cnf
 fi
 
-if [ -f /etc/mysql/init_new_cluster ] ||  [ "$INIT_NEW_CLUSTER" == "true" ] ; then
+if [ -f /etc/mysql/init_new_cluster ] ||  [ "$INIT_NEW_CLUSTER" = "true" ] ; then
   echo "New cluster initialization"
   rm -f /etc/mysql/init_new_cluster
   mysqld --wsrep-new-cluster
