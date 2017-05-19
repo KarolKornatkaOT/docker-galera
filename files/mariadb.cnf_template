@@ -10,7 +10,8 @@
 #####################
 default_storage_engine = InnoDB
 datadir      = /var/lib/mysql
-tmpdir       = /var/lib/mysql/tmp
+#tmpdir       = /var/lib/mysql/tmp
+tmpdir       = /var/lib/mysql
 pid-file     = /var/run/mysqld/mysqld.pid
 socket       = /var/run/mysqld/mysqld.sock
 lower_case_table_names = 1
@@ -55,7 +56,7 @@ myisam_recover_options  = BACKUP
 #####################
 #InnoDB settings
 #####################
-innodb_log_group_home_dir      = /var/lib/mysql/dblogs
+innodb_log_group_home_dir      = /var/lib/mysql
 innodb_autoinc_lock_mode       = 2
 innodb_buffer_pool_instances   = 2
 #innodb_buffer_pool_size        = 50G --KO_X
@@ -105,8 +106,8 @@ innodb_use_native_aio          = 1 #in emergency inno db cannot start try 0
 #Replication + binlog settings
 #####################
 binlog_format     = ROW
-log_bin           = /var/lib/mysql/dblogs/binary/mariadb-bin
-log_bin_index     = /var/lib/mysql/dblogs/binary/mariadb-bin.index
+log_bin           = /var/lib/mysql/mariadb-bin
+log_bin_index     = /var/lib/mysql/mariadb-bin.index
 expire_logs_days  = 7
 max_binlog_size   = 512M
 log-slave-updates = 1
