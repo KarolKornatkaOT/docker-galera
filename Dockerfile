@@ -1,4 +1,4 @@
-FROM oberthur/docker-ubuntu:latest
+FROM oberthur/docker-ubuntu:16.04
 MAINTAINER Krzysztof Olecki <k.olecki@oberthur.com>
 
 ENV  MYSQL_VERSION=10.1.23 
