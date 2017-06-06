@@ -1,7 +1,7 @@
 FROM oberthur/docker-ubuntu:16.04
 MAINTAINER Krzysztof Olecki <k.olecki@oberthur.com>
 
-ENV  MYSQL_VERSION=10.1.23 
+ENV  MYSQL_VERSION=10.1.24
 ENV  MYSQL_REPO_VERSION=10.1
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
@@ -24,7 +24,7 @@ COPY files/backup.sh /scripts/
 
 RUN apt-get update \
  && apt-get upgrade 
-RUN apt-get install -y mariadb-server=$MYSQL_VERSION* percona-xtrabackup-24
+RUN apt-get install -y mariadb-server=$MYSQL_VERSION* percona-xtrabackup-24 mytop
 
 RUN tar cfz /scripts/galera_init_conf.tgz -C /etc/mysql .
 
