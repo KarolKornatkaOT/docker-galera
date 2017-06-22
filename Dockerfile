@@ -7,7 +7,7 @@ ENV  MYSQL_REPO_VERSION=10.1
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
-RUN apv-get update \
+RUN apt-get update \
  && apt-get upgrade \
  && apt-get install software-properties-common \
  && apt-key adv --keyserver-options HTTP_PROXY=$HTTP_PROXY --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 \
